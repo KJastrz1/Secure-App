@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Loan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Create a New Loan</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <p class="form-input">
+            {{ form.borrower_email.label }}<br>
+            {{ form.borrower_email(size=32) }}
+        </p>
+        <p class="form-input">
+            {{ form.amount.label }}<br>
+            {{ form.amount(size=32) }}
+        </p>
+        <p class="form-input">
+            {{ form.due_date.label }}<br>
+            {{ form.due_date(size=32) }}
+        </p>
+        <p class="button">{{ form.submit() }}</p>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</body>
+</html>

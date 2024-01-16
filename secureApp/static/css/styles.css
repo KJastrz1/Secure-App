@@ -1,0 +1,58 @@
+.exclamation-mark {
+    color: red;
+    margin-left: 5px;
+    opacity: 1;
+    transition: opacity 1.3s;
+    font-size: 48px; 
+    font-weight: 900;
+}
+
+td {
+    padding: 5px; 
+}
+
+a{
+    margin: 1rem;
+}
+
+.form-input{
+    margin: 1rem;
+}
+
+.button{
+    margin: 1rem;
+}
+.alert{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top:  2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-success{
+    /* background-color: #d4edda; */
+    border-color: #d3e9d8;
+    color: #25b346;
+}
+
+.alert-error{
+    background-color: #f8d7da;
+    border-color: #ecc4c8;
+    color: #c41426;
+}
+
+.alert-info{
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.alert-warning{
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #ffbf00;
+}
+

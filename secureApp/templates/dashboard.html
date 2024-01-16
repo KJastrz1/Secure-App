@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .loan-section {
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome, {{ user.email }}</h1>
+    <h2 style="color: {{ 'green' if user.balance >= 0 else 'red' }};">
+        Your balance: {{ user.balance }}
+    </h2>
+    <br>
+
+
+    <div>
+        <button class="button" onclick="showSection('pending-loans')">Pending Loan Offers</button>
+        <button class="button" onclick="showSection('current-loans-taken')">Current Loans Taken</button>
+        <button class="button" onclick="showSection('current-loans-given')">Current Loans Given</button>
+        <button class="button" onclick="showSection('history-loans-taken')">History of Loans Taken</button>
+        <button class="button" onclick="showSection('history-loans-given')">History of Loans Given</button>
+    </div>
+    <br>
+
+
+    <div id="pending-loans" class="loan-section">
+        <h2 style="color: blue;">Pending Loan Offers</h2>
+        {% for loan, lender_email in pending_loans %}
+        <div>
+            <p>Amount: {{ loan.amount }}</p>
+            <p>Lender: {{ lender_email }}</p>
+            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+            <form action="{{ url_for('accept_loan', loan_id=loan.id) }}" method="post">
+                <input type="submit" value="Accept">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="current-loans-taken" class="loan-section">
+        <h2 style="color: blue;">Current Loans Taken</h2>
+        {% for loan, lender_email in taken_loans %}
+        <div>
+            <p>Amount: {{ loan.amount }}</p>
+            <p>Lender: {{ lender_email }}</p>
+            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+            <form action="{{ url_for('repay_loan', loan_id=loan.id) }}" method="post">
+                <input type="submit" value="Repay">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="current-loans-given" class="loan-section">
+        <h2 style="color: orange;">Current Loans Given</h2>
+        {% for loan, borrower_email in given_loans %}
+        <div>
+            <p>Amount: {{ loan.amount }}</p>
+            <p>Borrower: {{ borrower_email }}</p>
+            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="history-loans-taken" class="loan-section">
+        <h2 style="color: grey;">History of Loans Taken</h2>
+        {% for loan, lender_email in taken_loan_history %}
+        <div>
+            <p>Amount: {{ loan.amount }}</p>
+            <p>Lender: {{ lender_email }}</p>
+            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="history-loans-given" class="loan-section">
+        <h2 style="color: grey;">History of Loans Given</h2>
+        {% for loan, borrower_email in given_loan_history %}
+        <div>
+            <p>Amount: {{ loan.amount }}</p>
+            <p>Borrower: {{ borrower_email }}</p>
+            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <br>
+    <div style="display: flex; justify-content: space-around;">
+        <a href="add_loan">New loan</a>
+        <a href="logout">Logout</a>
+        <a href="usersettings">Settings</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <script>
+        function showSection(sectionId) {
+
+            var sections = document.getElementsByClassName('loan-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = 'none';
+            }
+
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
