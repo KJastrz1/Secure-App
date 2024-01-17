@@ -37,7 +37,7 @@
             <p>Amount: {{ loan.amount }}</p>
             <p>Lender: {{ lender_email }}</p>
             <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-            <form action="{{ url_for('accept_loan', loan_id=loan.id) }}" method="post">
+            <form action="{{ url_for('loans_bp.accept_loan', loan_id=loan.id) }}" method="post">
                 <input type="submit" value="Accept">
             </form>
         </div>
@@ -52,7 +52,7 @@
             <p>Amount: {{ loan.amount }}</p>
             <p>Lender: {{ lender_email }}</p>
             <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-            <form action="{{ url_for('repay_loan', loan_id=loan.id) }}" method="post">
+            <form action="{{ url_for('loans_bp.repay_loan', loan_id=loan.id) }}" method="post">
                 <input type="submit" value="Repay">
             </form>
         </div>

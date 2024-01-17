@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app as app, render_template, flash, redirect, url_for, session
+from flask import Blueprint, current_app as app, render_template, flash, redirect, url_for, session, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DecimalField, DateField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, Email
@@ -16,13 +16,13 @@ auth_bp = Blueprint('auth_bp', __name__)
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired(), Length(min=4, max=40)])
+    email = StringField('Email', validators=[InputRequired(), Length(min=4, max=40), Email()] )
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
     submit = SubmitField('Login')
 
 class RegisterForm(FlaskForm): 
-        email = StringField('Email', validators=[InputRequired(), Length(min=4, max=40)])
-        password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80),custom_password_validator])
+        email = StringField('Email', validators=[InputRequired(), Length(min=4, max=40), Email()])
+        password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80), custom_password_validator])
         confirm = PasswordField('Confirm Password', validators=[InputRequired(), Length(min=8, max=80), EqualTo('password', message='Passwords must match.')])
         submit = SubmitField('Register')
         
@@ -30,20 +30,19 @@ class RegisterForm(FlaskForm):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        
+        user = User.query.filter_by(email=form.email.data).first()       
         
         if user:            
-            lockout_time = 5  
-            if user.last_failed_login and (datetime.now() - user.last_failed_login) < timedelta(minutes=lockout_time) and user.failed_login_attempts >= 4:
-                flash('Account temporarily locked due to too many failed login attempts. Please try again later.', 'error')
-                return redirect(url_for('auth_bp.login'))
+            lockout_time_minutes = 1
+            if user.last_failed_login and (datetime.now() - user.last_failed_login) < timedelta(minutes=lockout_time_minutes) and user.failed_login_attempts >= 4:
+                flash(f'Account locked due to too many failed login attempts. Please try again in {lockout_time_minutes} minutes.', 'error')
 
+                return redirect(url_for('auth_bp.login'))
 
             stored_salt, stored_hash = user.password.split(':')         
             hashed_password = hash_password(form.password.data, stored_salt)
 
-            ip_address ='83.9.109.176'
+            ip_address =request.remote_addr
             print(ip_address)
             response=requests.get('http://ip-api.com/json/'+ip_address) 
             print(response)          
@@ -59,7 +58,11 @@ def login():
                     latitude=response_dict["lat"],
                     longitude=response_dict["lon"],
                     country=response_dict["country"],
-                    city=response_dict["city"])
+                    city=response_dict["city"],
+                    browser=request.user_agent.browser,
+                    browser_version=request.user_agent.version,
+                    platform=request.user_agent.platform,
+                    uas = request.user_agent.string )
             
             if hashed_password == stored_hash:
               

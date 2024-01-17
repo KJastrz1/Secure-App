@@ -15,6 +15,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function 
 
+
+def custom_amount_validator(form, field):   
+    if field.data < 0:
+        raise ValidationError('Amount must be positive.')
+
 def custom_password_validator(form, field):
    
     password = field.data
@@ -28,7 +33,7 @@ def custom_password_validator(form, field):
     if not any(not char.isalnum() for char in password):
         raise ValidationError('Password must contain at least one special character .')
     print(pwnedpasswords.check(password))
-    if pwnedpasswords.check(password)>10000:
+    if pwnedpasswords.check(password)>100:
         raise ValidationError('Password has been compromised. Please choose a different password.')
 
 def send_email(to, subject, template):
@@ -43,7 +48,7 @@ def send_email(to, subject, template):
 
 def hash_password(password, salt):
     hashed_password = hashlib.sha3_256((password + salt + current_app.config['PEPPER']).encode()).hexdigest()
-    for i in range(10):
+    for i in range(1000):
         hashed_password = hashlib.sha3_256(hashed_password.encode()).hexdigest()
     return hashed_password
 

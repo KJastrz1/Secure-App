@@ -38,8 +38,13 @@ class LoginAttempt(db.Model):
     success = db.Column(db.Boolean, nullable=False)
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
-    country = db.Column(db.String(80), nullable=False)
-    city = db.Column(db.String(80), nullable=False)
-    
+    country = db.Column(db.String(80), nullable=True)
+    city = db.Column(db.String(80), nullable=True)
+    browser= db.Column(db.String(80), nullable=True)
+    browser_version = db.Column(db.String(80), nullable=True)
+    platform = db.Column(db.String(80), nullable=True)
+    uas = db.Column(db.String(255), nullable=True)
+
+
     user = relationship("User", backref="login_attempts")
  

@@ -1,18 +1,18 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, DateField, SubmitField
-from wtforms.validators import InputRequired, Length
-from sqlalchemy.orm import session
+from wtforms.validators import InputRequired, Length, Email
+from flask import session
 from ..models import db, User, Loan
 from decimal import Decimal
-from secureApp.utils.utils import login_required 
+from secureApp.utils.utils import custom_amount_validator, login_required 
 
 
 loans_bp = Blueprint('loans_bp', __name__)
 
 class LoanForm(FlaskForm):
-    borrower_email = StringField('Borrower Email', validators=[InputRequired(), Length(min=4, max=40)])
-    amount = DecimalField('Amount', validators=[InputRequired()])
+    borrower_email = StringField('Borrower Email', validators=[InputRequired(), Length(min=4, max=40), Email()])
+    amount = DecimalField('Amount', validators=[InputRequired(),Length(min=1), custom_amount_validator])
     due_date = DateField('Due Date', validators=[InputRequired()], format='%Y-%m-%d')
     submit = SubmitField('Create Loan')
 
