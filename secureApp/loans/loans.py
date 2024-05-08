@@ -5,15 +5,15 @@ from wtforms.validators import InputRequired, Length, Email
 from flask import session
 from ..models import db, User, Loan
 from decimal import Decimal
-from secureApp.utils.utils import custom_amount_validator, login_required 
+from secureApp.utils.utils import custom_amount_validator, custom_date_validator, login_required 
 
 
 loans_bp = Blueprint('loans_bp', __name__)
 
 class LoanForm(FlaskForm):
     borrower_email = StringField('Borrower Email', validators=[InputRequired(), Length(min=4, max=40), Email()])
-    amount = DecimalField('Amount', validators=[InputRequired(),Length(min=1), custom_amount_validator])
-    due_date = DateField('Due Date', validators=[InputRequired()], format='%Y-%m-%d')
+    amount = DecimalField('Amount', validators=[InputRequired(), custom_amount_validator])
+    due_date = DateField('Due Date', validators=[InputRequired(), custom_date_validator], format='%Y-%m-%d')
     submit = SubmitField('Create Loan')
 
 @loans_bp.route('/accept_loan/<int:loan_id>', methods=['POST'])
@@ -60,11 +60,14 @@ def add_loan():
     form = LoanForm()
     if form.validate_on_submit():
         borrower = User.query.filter_by(email=form.borrower_email.data).first()
+        lender_id = session.get('user_id')
         if not borrower:
             flash('Borrower email not found.', 'error')
             return render_template('add_loan.html', form=form)
-
-        lender_id = session.get('user_id')
+        if borrower.id == lender_id:
+            flash('You cannot lend money to yourself.', 'error')
+            return render_template('add_loan.html', form=form)
+        
         new_loan = Loan(
             amount=form.amount.data,
             lender_id=lender_id,

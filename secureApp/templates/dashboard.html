@@ -3,123 +3,126 @@
 
 <head>
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="{{ url_for('static', filename='dist/styles.css') }}" rel="stylesheet">
     <style>
         .loan-section {
             display: none;
-            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
-    <h1>Welcome, {{ user.email }}</h1>
-    <h2 style="color: {{ 'green' if user.balance >= 0 else 'red' }};">
-        Your balance: {{ user.balance }}
-    </h2>
-    <br>
-
-
-    <div>
-        <button class="button" onclick="showSection('pending-loans')">Pending Loan Offers</button>
-        <button class="button" onclick="showSection('current-loans-taken')">Current Loans Taken</button>
-        <button class="button" onclick="showSection('current-loans-given')">Current Loans Given</button>
-        <button class="button" onclick="showSection('history-loans-taken')">History of Loans Taken</button>
-        <button class="button" onclick="showSection('history-loans-given')">History of Loans Given</button>
+    <div class="flex flex-row gap-3 justify-end m-3 mb-6">
+        <a class="button-primary" href="add_loan">New loan</a>
+        <a class="button-primary" href="usersettings">Settings</a>
+        <a class="button-primary" href="logout">Logout</a>
     </div>
-    <br>
 
+    <div class="flex flex-col w-full h-full items-center gap-2 p-4">
+        <h1 class="text-2xl">Welcome, {{ user.email }}</h1>
+        <h2 class="text-xl" style="color: {{ 'green' if user.balance >= 0 else 'red' }};">
+            Your balance: {{ user.balance }}
+        </h2>
+        <br>
 
-    <div id="pending-loans" class="loan-section">
-        <h2 style="color: blue;">Pending Loan Offers</h2>
-        {% for loan, lender_email in pending_loans %}
-        <div>
-            <p>Amount: {{ loan.amount }}</p>
-            <p>Lender: {{ lender_email }}</p>
-            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-            <form action="{{ url_for('loans_bp.accept_loan', loan_id=loan.id) }}" method="post">
-                <input type="submit" value="Accept">
-            </form>
+        <div class="flex gap-2">
+            <button class="button-primary" onclick="showSection('pending-loans')">Pending Loan Offers</button>
+            <button class="button-primary" onclick="showSection('current-loans-taken')">Current Loans Taken</button>
+            <button class="button-primary" onclick="showSection('current-loans-given')">Current Loans Given</button>
+            <button class="button-primary" onclick="showSection('history-loans-taken')">History of Loans
+                Taken</button>
+            <button class="button-primary" onclick="showSection('history-loans-given')">History of Loans
+                Given</button>
         </div>
-        {% endfor %}
-    </div>
+        <br>
 
-
-    <div id="current-loans-taken" class="loan-section">
-        <h2 style="color: blue;">Current Loans Taken</h2>
-        {% for loan, lender_email in taken_loans %}
-        <div>
-            <p>Amount: {{ loan.amount }}</p>
-            <p>Lender: {{ lender_email }}</p>
-            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-            <form action="{{ url_for('loans_bp.repay_loan', loan_id=loan.id) }}" method="post">
-                <input type="submit" value="Repay">
-            </form>
+        <div id="pending-loans" class="loan-section justify-center">
+            <h2>Pending Loan Offers</h2>
+            {% for loan, lender_email in pending_loans %}
+            <div class="mb-4">
+                <p>Amount: {{ loan.amount }}</p>
+                <p>Lender: {{ lender_email }}</p>
+                <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+                <form action="{{ url_for('loans_bp.accept_loan', loan_id=loan.id) }}" method="post">
+                    <input type="submit" class='button-primary mt-2' value="Accept">
+                </form>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
 
 
-    <div id="current-loans-given" class="loan-section">
-        <h2 style="color: orange;">Current Loans Given</h2>
-        {% for loan, borrower_email in given_loans %}
-        <div>
-            <p>Amount: {{ loan.amount }}</p>
-            <p>Borrower: {{ borrower_email }}</p>
-            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        <div id="current-loans-taken" class="loan-section justify-center">
+            <h2>Current Loans Taken</h2>
+            {% for loan, lender_email in taken_loans %}
+            <div class="mb-4">
+                <p>Amount: {{ loan.amount }}</p>
+                <p>Lender: {{ lender_email }}</p>
+                <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+                <form action="{{ url_for('loans_bp.repay_loan', loan_id=loan.id) }}" method="post">
+                    <input class='button-primary mt-2' type="submit" value="Repay">
+                </form>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
 
 
-    <div id="history-loans-taken" class="loan-section">
-        <h2 style="color: grey;">History of Loans Taken</h2>
-        {% for loan, lender_email in taken_loan_history %}
-        <div>
-            <p>Amount: {{ loan.amount }}</p>
-            <p>Lender: {{ lender_email }}</p>
-            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        <div id="current-loans-given" class="loan-section justify-center">
+            <h2>Current Loans Given</h2>
+            {% for loan, borrower_email in given_loans %}
+            <div class="mb-4">
+                <p>Amount: {{ loan.amount }}</p>
+                <p>Borrower: {{ borrower_email }}</p>
+                <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
 
 
-    <div id="history-loans-given" class="loan-section">
-        <h2 style="color: grey;">History of Loans Given</h2>
-        {% for loan, borrower_email in given_loan_history %}
-        <div>
-            <p>Amount: {{ loan.amount }}</p>
-            <p>Borrower: {{ borrower_email }}</p>
-            <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+        <div id="history-loans-taken" class="loan-section justify-center">
+            <h2>History of Loans Taken</h2>
+            {% for loan, lender_email in taken_loan_history %}
+            <div class="mb-4">
+                <p>Amount: {{ loan.amount }}</p>
+                <p>Lender: {{ lender_email }}</p>
+                <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+            </div>
+            {% endfor %}
         </div>
+
+
+        <div id="history-loans-given" class="loan-section justify-center">
+            <h2>History of Loans Given</h2>
+            {% for loan, borrower_email in given_loan_history %}
+            <div class="mb-4">
+                <p>Amount: {{ loan.amount }}</p>
+                <p>Borrower: {{ borrower_email }}</p>
+                <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <br>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
         {% endfor %}
-    </div>
+        {% endif %}
+        {% endwith %}
+        <script>
+            function showSection(sectionId) {
 
-    <br>
-    <div style="display: flex; justify-content: space-around;">
-        <a href="add_loan">New loan</a>
-        <a href="logout">Logout</a>
-        <a href="usersettings">Settings</a>
-    </div>
+                var sections = document.getElementsByClassName('loan-section');
+                for (var i = 0; i < sections.length; i++) {
+                    sections[i].style.display = 'none';
+                }
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-    <script>
-        function showSection(sectionId) {
-
-            var sections = document.getElementsByClassName('loan-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].style.display = 'none';
+                document.getElementById(sectionId).style.display = 'block';
             }
-
-            document.getElementById(sectionId).style.display = 'block';
-        }
-    </script>
+        </script>
+    </div>
 </body>
 
 </html>

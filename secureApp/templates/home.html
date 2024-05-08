@@ -11,24 +11,24 @@
 </head>
 
 <body>
-    <header>
+    <div class="base-layout gap-5">
         <h1>Welcome to LendLink</h1>
 
-    </header>
+        <div class="flex flex-row gap-3">
+            <a class='button-primary' href="login">Login</a>
+            <a class='button-primary' href="register">Register</a>
+        </div>
 
 
-    <button class="button-blue" href="login">Login</button>
-    <button href="register">Register</button>
 
-
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 </body>
 
 </html>

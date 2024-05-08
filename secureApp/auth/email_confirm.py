@@ -14,7 +14,7 @@ def confirm_email(token):
         email = verify_confirmation_token(token)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
-        return redirect(url_for('general_bp.home'))
+        return redirect(url_for('auth_bp.login'))
 
     user = User.query.filter_by(email=email).first_or_404()
     if user.emailConfirmed:

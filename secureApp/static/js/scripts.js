@@ -17,10 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     passwordField.addEventListener('input', function () {
         const password = passwordField.value;
         const entropy = calculate_entropy(password);
-        const strengthCategory = categorize_strength(entropy);
-        const requirements = check_requirements(password);
-
-        strengthDiv.innerText = `Password Strength: ${strengthCategory}`;
+        categorize_strength(entropy);
+        const requirements = check_requirements(password);       
         update_requirements_ui(requirements);
     });
 
@@ -34,11 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const strong_entropy_threshold = 70;
         const medium_entropy_threshold = 50;
         if (entropy >= strong_entropy_threshold) {
-            return 'Strong';
+            strengthDiv.innerHTML = `<p class='text-green-600'>Strong</p>`;
         } else if (entropy >= medium_entropy_threshold) {
-            return 'Medium';
+            strengthDiv.innerHTML = `<p class='text-orange-600'>Medium</p>`;
         } else {
-            return 'Weak';
+            strengthDiv.innerHTML = `<p class='text-red-600'>Weak</p>`;
         }
     }
 
@@ -54,14 +52,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function update_requirements_ui(requirements) {
         requirementsDiv.innerHTML = `
             <ul>
-                <li style="color: ${requirements.digit ? 'green' : 'red'};">At least one digit</li>
-                <li style="color: ${requirements.letter ? 'green' : 'red'};">At least one letter</li>
-                <li style="color: ${requirements.specialChar ? 'green' : 'red'};">At least one special character</li>
-                <li style="color: ${requirements.length ? 'green' : 'red'};">At least 8 characters long</li>
+                <li class="${requirements.digit ? 'text-green-600' : 'text-red-600'}">At least one digit</li>
+                <li class="${requirements.letter ? 'text-green-600' : 'text-red-600'}">At least one letter</li>
+                <li class="${requirements.specialChar ? 'text-green-600' : 'text-red-600'}">At least one special character</li>
+                <li class="${requirements.length ? 'text-green-600' : 'text-red-600'}">At least 8 characters long</li>
             </ul>
         `;
     }
-
     
+    var form = document.querySelector('form');
+
+    form.addEventListener('submit', function() {
+        var submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+    });
 
 });

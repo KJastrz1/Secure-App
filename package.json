@@ -2,7 +2,6 @@
   "scripts": {
     "build-css": "tailwindcss -i ./secureApp/static/css/styles.css -o ./secureApp/static/dist/styles.css --watch"
   },
-  
   "devDependencies": {
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",

@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Loan</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="{{ url_for('static', filename='dist/styles.css') }}" rel="stylesheet">
 </head>
-<body>
-    <h1>Create a New Loan</h1>
-    <form method="post">
-        {{ form.hidden_tag() }}
-        {{ form.csrf_token }}
-        <p class="form-input">
-            {{ form.borrower_email.label }}<br>
-            {{ form.borrower_email(size=32) }}
-        </p>
-        <p class="form-input">
-            {{ form.amount.label }}<br>
-            {{ form.amount(size=32) }}
-        </p>
-        <p class="form-input">
-            {{ form.due_date.label }}<br>
-            {{ form.due_date(size=32) }}
-        </p>
-        <p class="button">{{ form.submit() }}</p>
-    </form>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+<body>
+    <div class="base-layout gap-5">
+        <h1 class="text-xl">Give a New Loan</h1>
+        <form method="post" class="form">           
+            {{ form.csrf_token }}
+            <p class="form-field">
+                {{ form.borrower_email.label }}
+                {{ form.borrower_email(size=32,class="input") }}
+                {% for error in form.borrower_email.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                {{ form.amount.label }}
+                {{ form.amount(size=32,class="input") }}
+                {% for error in form.amount.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                {{ form.due_date.label }}
+                {{ form.due_date(size=32,class="input") }}
+                {% for error in form.due_date.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="button-primary">{{ form.submit() }}</p>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 </body>
+
 </html>

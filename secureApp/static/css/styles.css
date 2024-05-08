@@ -1,71 +1,74 @@
-@tailwind base; 
-@tailwind components; 
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-
 @layer components {
-    .button-blue {
-      @apply bg-blue-500 text-black font-bold py-2 px-4 rounded;
+
+    .button-primary {
+        @apply border-2 border-custom-orange font-bold py-1 px-2 rounded-md hover:bg-custom-orange cursor-pointer;
     }
-  }
+
+    .button-primary input[type="submit"]:hover,
+    .button-primary button:hover {
+        cursor: pointer;
+    }
+
+    .base-layout {
+        @apply flex flex-col w-full h-full justify-center items-center;
+    }
+
+    .form {
+        @apply flex flex-col items-center gap-4;
+    }
+
+    .form-field {
+        @apply flex flex-col gap-1 w-full;
+    }
+
+    .input {
+        @apply bg-gray-700 rounded-md py-1 px-2 w-full;
+    }
+}
 
 
-  
+body {
+    background-color: #212121;
+    color: white;
+    height: 100vh;    
+}
+    
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
 .exclamation-mark {
     color: red;
     margin-left: 5px;
     opacity: 1;
     transition: opacity 1.3s;
-    font-size: 48px; 
+    font-size: 48px;
     font-weight: 900;
 }
 
-td {
-    padding: 5px; 
-}
-
-a{
-    margin: 1rem;
-}
-
-.form-input{
-    margin: 1rem;
-}
-
-.button{
-    margin: 1rem;
-}
-.alert{
-    font-size: 2rem;
+.alert {
     font-weight: 700;
-    margin-top:  2rem;
-    margin-bottom: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.alert-success{
-    /* background-color: #d4edda; */
-    border-color: #d3e9d8;
+.alert-success {
     color: #25b346;
 }
 
-.alert-error{
-    background-color: #f8d7da;
-    border-color: #ecc4c8;
+.alert-error {
     color: #c41426;
 }
 
-.alert-info{
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
+.alert-info {
     color: #0c5460;
 }
 
-.alert-warning{
-    background-color: #fff3cd;
-    border-color: #ffeeba;
+.alert-warning {
     color: #ffbf00;
 }
-
