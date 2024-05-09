@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app as app, render_template, flash, redirect, url_for, session, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DecimalField, DateField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, Email
 from sqlalchemy.orm import session
 import os
@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from flask import session, redirect, url_for
 from ..models import db, User, LoginAttempt
 import requests
-
+import time
+from random import uniform
 from .email_confirm import send_confirmation_email 
 from secureApp.utils.utils import custom_password_validator, hash_password 
 
@@ -26,7 +27,7 @@ class RegisterForm(FlaskForm):
         confirm = PasswordField('Confirm Password', validators=[InputRequired(), Length(min=8, max=80), EqualTo('password', message='Passwords must match.')])
         submit = SubmitField('Register')
         
-@auth_bp.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -35,10 +36,12 @@ def login():
         if user:            
             lockout_time_minutes = 1
             if user.last_failed_login and (datetime.now() - user.last_failed_login) < timedelta(minutes=lockout_time_minutes) and user.failed_login_attempts >= 4:
-                flash(f'Account locked due to too many failed login attempts. Please try again in {lockout_time_minutes} minutes.', 'error')
+                flash(f'Account locked due to too many failed login attempts. Please try again in {lockout_time_minutes} minute(s).', 'error')
 
                 return redirect(url_for('auth_bp.login'))
-
+            
+            time.sleep(uniform(0.5, 2))
+            
             stored_salt, stored_hash = user.password.split(':')         
             hashed_password = hash_password(form.password.data, stored_salt)
 
@@ -55,17 +58,16 @@ def login():
             login_attempt = LoginAttempt(
                     user_id=user.id,
                     ip_address=ip_address,
-                    latitude=response_dict["lat"],
-                    longitude=response_dict["lon"],
-                    country=response_dict["country"],
-                    city=response_dict["city"],
+                    latitude=response_dict.get("lat", None),
+                    longitude=response_dict.get("lon", None),
+                    country=response_dict.get("country", None),
+                    city=response_dict.get("city", None),
                     browser=request.user_agent.browser,
                     browser_version=request.user_agent.version,
                     platform=request.user_agent.platform,
                     uas = request.user_agent.string )
             
-            if hashed_password == stored_hash:
-              
+            if hashed_password == stored_hash:              
                 user.failed_login_attempts = 0
                 user.last_failed_login = None                
                 session['user_id'] = user.id
@@ -116,4 +118,4 @@ def register():
 @auth_bp.route('/logout')
 def logout():
     session.pop('user_id', None)
-    return redirect(url_for('general_bp.home'))
+    return redirect(url_for('auth_bp.login'))

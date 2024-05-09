@@ -17,10 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     passwordField.addEventListener('input', function () {
         const password = passwordField.value;
         const entropy = calculate_entropy(password);
-        const strengthCategory = categorize_strength(entropy);
+        categorize_strength(entropy);
         const requirements = check_requirements(password);
-
-        strengthDiv.innerText = `Password Strength: ${strengthCategory}`;
         update_requirements_ui(requirements);
     });
 
@@ -34,11 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const strong_entropy_threshold = 70;
         const medium_entropy_threshold = 50;
         if (entropy >= strong_entropy_threshold) {
-            return 'Strong';
+            strengthDiv.innerHTML = `<p class='text-green-600'>Strong</p>`;
         } else if (entropy >= medium_entropy_threshold) {
-            return 'Medium';
+            strengthDiv.innerHTML = `<p class='text-orange-600'>Medium</p>`;
         } else {
-            return 'Weak';
+            strengthDiv.innerHTML = `<p class='text-red-600'>Weak</p>`;
         }
     }
 
@@ -54,31 +52,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function update_requirements_ui(requirements) {
         requirementsDiv.innerHTML = `
             <ul>
-                <li style="color: ${requirements.digit ? 'green' : 'red'};">At least one digit</li>
-                <li style="color: ${requirements.letter ? 'green' : 'red'};">At least one letter</li>
-                <li style="color: ${requirements.specialChar ? 'green' : 'red'};">At least one special character</li>
-                <li style="color: ${requirements.length ? 'green' : 'red'};">At least 8 characters long</li>
+                <li class="${requirements.digit ? 'text-green-600' : 'text-red-600'}">At least one digit</li>
+                <li class="${requirements.letter ? 'text-green-600' : 'text-red-600'}">At least one letter</li>
+                <li class="${requirements.specialChar ? 'text-green-600' : 'text-red-600'}">At least one special character</li>
+                <li class="${requirements.length ? 'text-green-600' : 'text-red-600'}">At least 8 characters long</li>
             </ul>
         `;
     }
+    const form = document.querySelector('.form');
+    const submitButton = form.querySelector('.submit-btn');   
+    const buttonPrimary = form.querySelector('.button-primary');
 
-    
-    // const emailField = document.getElementById('email');
-    // const emailErrorDiv = document.getElementById('email-error'); /
-    // emailField.addEventListener('input', function () {
-    //     const email = emailField.value;
-    //     if (!validateEmail(email)) {
-    //         emailErrorDiv.innerText = 'Invalid email format';
-    //     } else {
-    //         emailErrorDiv.innerText = '';
-    //     }
-    // });
-
- 
-
-    // function validateEmail(email) {
-    //     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     return re.test(String(email).toLowerCase());
-    // }
-
+    form.addEventListener('submit', function (e) {
+        buttonPrimary.classList.add('disabled');
+        submitButton.disabled = true;
+    });
 });

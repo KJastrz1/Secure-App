@@ -23,7 +23,7 @@ def create_app():
     app.config['MAIL_USE_SSL'] = False
     app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
     app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
-    app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('EMAIL_USER')
+    app.config['MAIL_DEFAULT_SENDER'] =  ('Lend List', os.environ.get('EMAIL_USER')) 
 
 
     db.init_app(app)

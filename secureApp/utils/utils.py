@@ -1,6 +1,6 @@
 from functools import wraps
 import hashlib
-
+from datetime import date
 from flask import app, redirect, request, session, url_for, current_app
 import pwnedpasswords
 from wtforms import ValidationError
@@ -19,6 +19,10 @@ def login_required(f):
 def custom_amount_validator(form, field):   
     if field.data < 0:
         raise ValidationError('Amount must be positive.')
+
+def custom_date_validator(form, field):
+    if field.data <= date.today():
+        raise ValidationError('Date must be in the future.')
 
 def custom_password_validator(form, field):
    

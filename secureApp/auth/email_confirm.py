@@ -14,7 +14,7 @@ def confirm_email(token):
         email = verify_confirmation_token(token)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
-        return redirect(url_for('general_bp.home'))
+        return redirect(url_for('auth_bp.login'))
 
     user = User.query.filter_by(email=email).first_or_404()
     if user.emailConfirmed:
@@ -26,15 +26,14 @@ def confirm_email(token):
     return redirect(url_for('auth_bp.login'))
 
 
-def send_confirmation_email(new_user):
-            
-        token = generate_confirmation_token(new_user.email)
+def send_confirmation_email(new_user):            
+    token = generate_confirmation_token(new_user.email)
 
-        confirm_url = url_for('email_confirm_bp.confirm_email', token=token, _external=True)
-    
-        template = render_template('activate_email.html', confirm_url=confirm_url)
-        subject = "Please confirm your email"
-        send_email(new_user.email, subject, template)  
+    confirm_url = url_for('email_confirm_bp.confirm_email', token=token, _external=True)
+
+    template = render_template('activate_email.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    send_email(new_user.email, subject, template)  
 
 
     

@@ -14,9 +14,7 @@ from secureApp.utils.utils import custom_password_validator, hash_password, logi
 
 general_bp = Blueprint('general_bp', __name__)
 
-@general_bp.route('/')
-def home():
-    return render_template('home.html')
+
 
 @general_bp.route('/dashboard')
 @login_required
@@ -25,12 +23,11 @@ def dashboard():
     user = User.query.get(user_id)
     
     if user:        
-        pending_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.lender_id).filter(Loan.borrower_id == user_id, Loan.is_accepted.is_(None), Loan.is_repaid.is_(None)).all()
+        pending_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.lender_id).filter(Loan.borrower_id == user_id, Loan.is_accepted==False, Loan.is_repaid==False).all()
       
-        taken_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.lender_id).filter(Loan.borrower_id == user_id).all()
+        taken_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.lender_id).filter(Loan.borrower_id == user_id, Loan.is_repaid == False, Loan.is_accepted == True).all()
         
-        given_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.borrower_id).filter(Loan.lender_id == user_id).all()
-        
+        given_loans = db.session.query(Loan, User.email).join(User, User.id == Loan.borrower_id).filter(Loan.lender_id == user_id, Loan.is_repaid==False).all()        
 
         taken_loan_history = db.session.query(Loan, User.email).join(User, User.id == Loan.lender_id).filter(Loan.borrower_id == user_id, Loan.is_accepted == True, Loan.is_repaid == True).all()        
 
@@ -47,7 +44,7 @@ def dashboard():
         )
     else:
         flash("User not found", 'error')
-        return redirect(url_for('general_bp.home'))
+        return redirect(url_for('auth_bp.login'))
 
 
 
