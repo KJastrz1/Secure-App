@@ -599,11 +599,21 @@ video {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-weight: 700;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-color: #ff5600;
+  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .button-primary:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 86 0 / var(--tw-bg-opacity));
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-color: #ff5600;
+  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .button-primary input[type="submit"]:hover,
@@ -618,6 +628,7 @@ video {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 
 .form {
@@ -629,13 +640,11 @@ video {
 
 .form-field {
   display: flex;
-  width: 100%;
   flex-direction: column;
   gap: 0.25rem;
 }
 
 .\!input {
-  width: 100%;
   border-radius: 0.375rem;
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -646,7 +655,6 @@ video {
 }
 
 .input {
-  width: 100%;
   border-radius: 0.375rem;
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -795,8 +803,16 @@ video {
   margin-bottom: 1.5rem;
 }
 
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .box-border {
@@ -900,6 +916,10 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.w-56 {
+  width: 14rem;
 }
 
 .w-\[this-is\\\\\] {
@@ -2548,6 +2568,16 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td{
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
 .exclamation-mark {

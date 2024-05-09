@@ -5,7 +5,7 @@
 @layer components {
 
     .button-primary {
-        @apply border-2 border-custom-orange font-bold py-1 px-2 rounded-md hover:bg-custom-orange cursor-pointer;
+        @apply border-2 border-custom-orange font-bold py-1 px-2 rounded-md hover:bg-custom-orange cursor-pointer shadow shadow-custom-orange hover:shadow-md hover:shadow-custom-orange;
     }
 
     .button-primary input[type="submit"]:hover,
@@ -14,7 +14,7 @@
     }
 
     .base-layout {
-        @apply flex flex-col w-full h-full justify-center items-center;
+        @apply flex flex-col w-full h-full justify-center items-center p-4;
     }
 
     .form {
@@ -22,11 +22,11 @@
     }
 
     .form-field {
-        @apply flex flex-col gap-1 w-full;
+        @apply flex flex-col gap-1;
     }
 
     .input {
-        @apply bg-gray-700 rounded-md py-1 px-2 w-full;
+        @apply bg-gray-700 rounded-md py-1 px-2;
     }
 }
 
@@ -39,6 +39,17 @@ body {
     
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td{
+    border: 1px solid #ddd;
+    padding: 8px;
+
 }
 
 .exclamation-mark {

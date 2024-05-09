@@ -7,32 +7,36 @@
 </head>
 
 <body>
+
+    <div class="p-4">
+        <a class="button-primary" href="dashboard">Dashboard</a>
+    </div>
     <div class="base-layout gap-5">
         <h1 class="text-xl">Give a New Loan</h1>
-        <form method="post" class="form">           
+        <form method="post" class="form">
             {{ form.csrf_token }}
             <p class="form-field">
                 {{ form.borrower_email.label }}
-                {{ form.borrower_email(size=32,class="input") }}
+                {{ form.borrower_email(class="input w-56") }}
                 {% for error in form.borrower_email.errors %}
                 <span style="color: red;">{{ error }}</span>
                 {% endfor %}
             </p>
             <p class="form-field">
                 {{ form.amount.label }}
-                {{ form.amount(size=32,class="input") }}
+                {{ form.amount(class="input w-56") }}
                 {% for error in form.amount.errors %}
                 <span style="color: red;">{{ error }}</span>
                 {% endfor %}
             </p>
             <p class="form-field">
                 {{ form.due_date.label }}
-                {{ form.due_date(size=32,class="input") }}
+                {{ form.due_date(class="input w-56") }}
                 {% for error in form.due_date.errors %}
                 <span style="color: red;">{{ error }}</span>
                 {% endfor %}
             </p>
-            <p class="button-primary">{{ form.submit() }}</p>
+            <p class="button-primary mt-1">{{ form.submit() }}</p>
         </form>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
