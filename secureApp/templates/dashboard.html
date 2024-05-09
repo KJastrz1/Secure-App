@@ -43,8 +43,11 @@
                 <p>Amount: {{ loan.amount }}</p>
                 <p>Lender: {{ lender_email }}</p>
                 <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-                <form action="{{ url_for('loans_bp.accept_loan', loan_id=loan.id) }}" method="post">
-                    <input type="submit" class='button-primary mt-2' value="Accept">
+                <form action="{{ url_for('loans_bp.accept_loan', loan_id=loan.id) }}" method="post" class="form">
+                    <div class="button-primary">
+                        <button type="submit" class="submit-btn">Accept</button>
+                        <div class="loader"></div>
+                    </div>
                 </form>
             </div>
             {% endfor %}
@@ -58,8 +61,11 @@
                 <p>Amount: {{ loan.amount }}</p>
                 <p>Lender: {{ lender_email }}</p>
                 <p>Due Date: {{ loan.due_date.strftime('%Y-%m-%d') }}</p>
-                <form action="{{ url_for('loans_bp.repay_loan', loan_id=loan.id) }}" method="post">
-                    <input class='button-primary mt-2' type="submit" value="Repay">
+                <form action="{{ url_for('loans_bp.repay_loan', loan_id=loan.id) }}" method="post" class="form">
+                    <div class="button-primary">
+                        <button type="submit" class="submit-btn">Repay</button>
+                        <div class="loader"></div>
+                    </div>
                 </form>
             </div>
             {% endfor %}

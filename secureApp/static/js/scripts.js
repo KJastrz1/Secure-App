@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordField.value;
         const entropy = calculate_entropy(password);
         categorize_strength(entropy);
-        const requirements = check_requirements(password);       
+        const requirements = check_requirements(password);
         update_requirements_ui(requirements);
     });
 
@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
             </ul>
         `;
     }
-    
-    var form = document.querySelector('form');
+    const form = document.querySelector('.form');
+    const submitButton = form.querySelector('.submit-btn');   
+    const buttonPrimary = form.querySelector('.button-primary');
 
-    form.addEventListener('submit', function() {
-        var submitButton = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', function (e) {
+        buttonPrimary.classList.add('disabled');
         submitButton.disabled = true;
     });
-
 });

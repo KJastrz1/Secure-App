@@ -52,6 +52,40 @@ td{
 
 }
 
+.loader {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #ff5600,
+    ;
+    width: 24px;
+    height: 24px;
+    animation: spin 2s linear infinite;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.button-primary .loader {
+    display: none;     
+}
+
+.button-primary.disabled .loader {
+    display: block; 
+}
+
+.button-primary.disabled .submit-btn {
+    display: none; 
+}
+
+.button-primary.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
 .exclamation-mark {
     color: red;
     margin-left: 5px;

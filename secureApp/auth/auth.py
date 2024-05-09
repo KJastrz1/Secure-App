@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app as app, render_template, flash, redirect, url_for, session, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DecimalField, DateField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, Email
 from sqlalchemy.orm import session
 import os
@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from flask import session, redirect, url_for
 from ..models import db, User, LoginAttempt
 import requests
-
+import time
+from random import uniform
 from .email_confirm import send_confirmation_email 
 from secureApp.utils.utils import custom_password_validator, hash_password 
 
@@ -38,7 +39,9 @@ def login():
                 flash(f'Account locked due to too many failed login attempts. Please try again in {lockout_time_minutes} minute(s).', 'error')
 
                 return redirect(url_for('auth_bp.login'))
-
+            
+            time.sleep(uniform(0.5, 2))
+            
             stored_salt, stored_hash = user.password.split(':')         
             hashed_password = hash_password(form.password.data, stored_salt)
 
