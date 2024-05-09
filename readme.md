@@ -1,7 +1,8 @@
 # Secure Lending Platform
 
-## Video presentation
-[https://img.youtube.com/vi/uMrKnNQw3j0/sddefault.jpg](https://youtu.be/uMrKnNQw3j0)
+## Video presentation 
+https://www.youtube.com/watch?v=uMrKnNQw3j0
+
 
 ## Overview
 This Secure Lending Platform is a simple web application designed with a focus on high security standards rather than functionality or performance. The primary aim is to provide a secure environment for users to lend and borrow money among themselves, ensuring robust authentication, secure data handling, and meticulous validation processes.
